@@ -1,3 +1,93 @@
 [build-system]
 requires = ["setuptools", "wheel", "toml"]
 build-backend = "setuptools.build_meta"
+
+[tool.isort]
+
+atomic = true
+profile = "black"
+line_length = 120
+py_version = 310
+skip_glob = ["docs/*", "logs/*", "_isaac_sim/*"]
+group_by_package = true
+
+sections = [
+    "FUTURE",
+    "STDLIB",
+    "THIRDPARTY",
+    "ASSETS_FIRSTPARTY",
+    "FIRSTPARTY",
+    "EXTRA_FIRSTPARTY",
+    "LOCALFOLDER",
+]
+extra_standard_library = [
+    "numpy",
+    "h5py",
+    "open3d",
+    "torch",
+    "tensordict",
+    "bpy",
+    "matplotlib",
+    "gymnasium",
+    "gym",
+    "scipy",
+    "hid",
+    "yaml",
+    "prettytable",
+    "toml",
+    "trimesh",
+    "tqdm",
+    "torchvision",
+    "transformers",
+    "einops", # Needed for transformers, doesn't always auto-install
+    "onnxruntime-gpu"
+]
+known_third_party = [
+    "isaacsim.core.api",
+    "isaacsim.replicator.common",
+    "omni.replicator.core",
+    "pxr",
+    "omni.kit.*",
+    "warp",
+    "carb",
+    "Semantics",
+]
+known_first_party = "isaaclab"
+known_assets_firstparty = "isaaclab_assets"
+known_extra_firstparty = [
+    "isaaclab_tasks"
+]
+# Imports from the local folder
+known_local_folder = "config"
+
+[tool.pyright]
+
+exclude = [
+    "**/__pycache__",
+    "**/_isaac_sim",
+    "**/docs",
+    "**/logs",
+    ".git",
+    ".vscode",
+]
+
+typeCheckingMode = "basic"
+pythonVersion = "3.10"
+pythonPlatform = "Linux"
+enableTypeIgnoreComments = true
+
+# This is required as the CI pre-commit does not download the module (i.e. numpy, torch, prettytable)
+# Therefore, we have to ignore missing imports
+reportMissingImports = "none"
+# This is required to ignore for type checks of modules with stubs missing.
+reportMissingModuleSource = "none" # -> most common: prettytable in mdp managers
+
+reportGeneralTypeIssues = "none"       # -> raises 218 errors (usage of literal MISSING in dataclasses)
+reportOptionalMemberAccess = "warning" # -> raises 8 errors
+reportPrivateUsage = "warning"
+
+[tool.codespell]
+skip = '*.usd,*.svg,*.png,_isaac_sim*,*.bib,*.css,*/_build'
+quiet-level = 0
+# the world list should always have words in lower case
+ignore-words-list = "haa,slq,collapsable,buss"

@@ -66,3 +66,6 @@ datasets
 
 # Tests
 tests/
+
+# W&B
+.env.wandb
