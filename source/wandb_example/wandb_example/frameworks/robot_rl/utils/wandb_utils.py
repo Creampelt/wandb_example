@@ -33,7 +33,7 @@ class WandbSummaryWriter(SummaryWriter):
             )
 
         settings: dict[str, Any] = {"console": "redirect"}
-        self.run = wandb.init(project=project, entity=entity, settings=wandb.Settings(**settings))
+        self.run = wandb.init(project=project, entity=entity)  # settings=wandb.Settings(**settings))
 
         # Change generated name to project-number format
         self.run.name = project + self.run.name.split("-")[-1]
