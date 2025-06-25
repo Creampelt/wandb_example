@@ -44,7 +44,7 @@ class WandbSummaryWriter(SummaryWriter):
         }
 
         run_name = os.path.split(log_dir)[-1]
-        self.run.log({"log_dir": run_name})
+        self.run.log({"log_dir": run_name}, step=0)
         self.run.define_metric("*", step_metric="local_step")
 
         self.saved_videos = {}
